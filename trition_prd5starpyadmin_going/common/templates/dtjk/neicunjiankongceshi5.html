@@ -1,0 +1,84 @@
+{% extends "base/base.html" %}
+
+{% block page_css %}
+
+{% endblock %}
+
+{% block container %}
+    <div style="margin: 0 15px">
+        <div id="container" style="min-width:1000px;height:820px"></div>
+    </div>
+{% endblock %}
+
+{% block page_javascript %}
+    <script src="https://cdn.highcharts.com.cn/jqueryjquery-1.8.3.min.js"></script>
+    <script src="https://cdn.highcharts.com.cn/highstock/highstock.js"></script>
+	<script src="https://cdn.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+<script>
+	Highcharts.setOptions({
+	global : {
+		useUTC : false
+	}
+});
+// Create the chart
+Highcharts.stockChart('container', {
+	chart : {
+		events : {
+			load : requestData // 图表加载完毕后执行的回调函数
+
+		}
+	},
+	rangeSelector: {
+		buttons: [{
+			count: 5,
+			type: 'minute',
+			text: '5M'
+		}, {
+			count: 15,
+			type: 'minute',
+			text: '15M'
+		}, {
+			type: 'all',
+			text: 'All'
+		}],
+		inputEnabled: false,
+		selected: 0
+	},
+	title : {
+		text : 'Status 500'
+	},
+	tooltip: {
+		split: false
+	},
+	exporting: {
+		enabled: true
+	},
+	series : [{
+		name : 'Status 500',
+		data : []
+	}]
+});
+/**
+ * Ajax 请求数据接口，并通过 Highcharts 提供的函数进行动态更新
+ * 接口调用完毕后间隔 1 s 继续调用本函数，以达到实时请求数据，实时更新的效果
+ */
+function requestData() {
+  $.ajax({
+    url: '',
+    success: function(point) {
+      var series = chart.series[0],
+        shift = series.data.length > 20; // 当数据点数量超过 20 个，则指定删除第一个点
+
+      // 新增点操作
+      //具体的参数详见：https://api.hcharts.cn/highcharts#Series.addPoint
+      chart.series[0].addPoint(point, true, shift);
+
+      // 60秒后继续调用本函数
+      setTimeout(requestData, 60000);
+    },
+    cache: false
+  });
+}
+</script>
+{% endblock %}

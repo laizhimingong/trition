@@ -1,0 +1,814 @@
+{% extends "base/base.html" %}
+
+{% block page_css %}
+
+{% endblock %}
+
+{% block container %}
+    <div style="margin: 0 15px">
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+        <div id="default_id" style="width: 1500px;height:600px;"></div>
+        <!-- 1-12月 每月不同告警类型占比-->
+        <div class="row">
+            <div id="month_1" style="width: 750px;height:400px;"></div>
+            <div id="month_2" style="width: 750px;height:400px;"></div>
+        </div>
+        <div class="row">
+            <div id="month_3" style="width: 750px;height:400px;"></div>
+            <div id="month_4" style="width: 750px;height:400px;"></div>
+        </div>
+        <div class="row">
+            <div id="month_5" style="width: 750px;height:400px;"></div>
+            <div id="month_6" style="width: 750px;height:400px;"></div>
+        </div>
+        <div class="row">
+            <div id="month_7" style="width: 750px;height:400px;"></div>
+            <div id="month_8" style="width: 750px;height:400px;"></div>
+        </div>
+        <div class="row">
+            <div id="month_9" style="width: 750px;height:400px;"></div>
+            <div id="month_10" style="width: 750px;height:400px;"></div>
+        </div>
+        <div class="row">
+            <div id="month_11" style="width: 750px;height:400px;"></div>
+            <div id="month_12" style="width: 750px;height:400px;"></div>
+        </div>
+
+
+    </div>
+{% endblock %}
+
+{% block page_javascript %}
+    <!-- 引入 echarts.js -->
+    <script src="/static/echarts/echarts.min.js"></script>
+    <script type="text/javascript">
+        //告警类型
+        let defaulnameChart = echarts.init(document.getElementById('default_id'));
+        let Chartmonth_1 = echarts.init(document.getElementById('month_1'));
+        let Chartmonth_2 = echarts.init(document.getElementById('month_2'));
+        let Chartmonth_3 = echarts.init(document.getElementById('month_3'));
+        let Chartmonth_4 = echarts.init(document.getElementById('month_4'));
+        let Chartmonth_5 = echarts.init(document.getElementById('month_5'));
+        let Chartmonth_6 = echarts.init(document.getElementById('month_6'));
+        let Chartmonth_7 = echarts.init(document.getElementById('month_7'));
+        let Chartmonth_8 = echarts.init(document.getElementById('month_8'));
+        let Chartmonth_9 = echarts.init(document.getElementById('month_9'));
+        let Chartmonth_10 = echarts.init(document.getElementById('month_10'));
+        let Chartmonth_11 = echarts.init(document.getElementById('month_11'));
+        let Chartmonth_12 = echarts.init(document.getElementById('month_12'));
+        //本年度月度告警数
+        let defaul_dict_key_list = new Array();//声明一个新的list用于存放数据key
+        defaul_dict_key_list ={{ month_of_alarms_dict_key|safe }};
+        let defaul_dict_value_list = new Array();//声明一个新的list用于存放数据value
+        defaul_dict_value_list ={{ month_of_alarms_dict_value|safe }};
+        //月度内告警数
+        //1月
+        let defaul_dict_key_list_0 = new Array();//声明一个新的list用于存放数据key
+        defaul_dict_key_list_0 ={{ alertname_data_dict_key_0|safe }};
+        let defaul_dict_value_list_0 = new Array(); //声明一个新的list用于存放数据value
+        defaul_dict_value_list_0 ={{ alertname_data_dict_value_0|safe }};
+        //2月
+        let defaul_dict_key_list_1 = new Array();//声明一个新的list用于存放数据key
+        defaul_dict_key_list_1 ={{ alertname_data_dict_key_1|safe }};
+        let defaul_dict_value_list_1 = new Array();//声明一个新的list用于存放数据value
+        defaul_dict_value_list_1 ={{ alertname_data_dict_value_1|safe }};
+        //3月
+        let defaul_dict_key_list_2 = new Array();//声明一个新的list用于存放数据key
+        defaul_dict_key_list_2 ={{ alertname_data_dict_key_2|safe }};
+        let defaul_dict_value_list_2 = new Array();//声明一个新的list用于存放数据value
+        defaul_dict_value_list_2 ={{ alertname_data_dict_value_2|safe }};
+        //4月
+        let defaul_dict_key_list_3 = new Array();//声明一个新的list用于存放数据key
+        defaul_dict_key_list_3 ={{ alertname_data_dict_key_3|safe }};
+        let defaul_dict_value_list_3 = new Array();//声明一个新的list用于存放数据value
+        defaul_dict_value_list_3 ={{ alertname_data_dict_value_3|safe }};
+        //5月
+        let defaul_dict_key_list_4 = new Array();//声明一个新的list用于存放数据key
+        defaul_dict_key_list_4 ={{ alertname_data_dict_key_4|safe }};
+        let defaul_dict_value_list_4 = new Array();//声明一个新的list用于存放数据value
+        defaul_dict_value_list_4 ={{ alertname_data_dict_value_4|safe }};
+        //6月
+        let defaul_dict_key_list_5 = new Array();//声明一个新的list用于存放数据key
+        defaul_dict_key_list_5 ={{ alertname_data_dict_key_5|safe }};
+        let defaul_dict_value_list_5 = new Array();//声明一个新的list用于存放数据value
+        defaul_dict_value_list_5 ={{ alertname_data_dict_value_5|safe }};
+        //7月
+        let defaul_dict_key_list_6 = new Array();//声明一个新的list用于存放数据key
+        defaul_dict_key_list_6 ={{ alertname_data_dict_key_6|safe }};
+        let defaul_dict_value_list_6 = new Array();//声明一个新的list用于存放数据value
+        defaul_dict_value_list_6 ={{ alertname_data_dict_value_6|safe }};
+        //8月
+        let defaul_dict_key_list_7 = new Array();//声明一个新的list用于存放数据key
+        defaul_dict_key_list_7 ={{ alertname_data_dict_key_7|safe }};
+        let defaul_dict_value_list_7 = new Array();//声明一个新的list用于存放数据value
+        defaul_dict_value_list_7 ={{ alertname_data_dict_value_7|safe }};
+        //9月
+        let defaul_dict_key_list_8 = new Array();//声明一个新的list用于存放数据key
+        defaul_dict_key_list_8 ={{ alertname_data_dict_key_8|safe }};
+        let defaul_dict_value_list_8 = new Array();//声明一个新的list用于存放数据value
+        defaul_dict_value_list_8 ={{ alertname_data_dict_value_8|safe }};
+        //10月
+        let defaul_dict_key_list_9 = new Array();//声明一个新的list用于存放数据key
+        defaul_dict_key_list_9 ={{ alertname_data_dict_key_9|safe }};
+        let defaul_dict_value_list_9 = new Array();//声明一个新的list用于存放数据value
+        defaul_dict_value_list_9 ={{ alertname_data_dict_value_9|safe }};
+        //11月
+        let defaul_dict_key_list_10 = new Array();//声明一个新的list用于存放数据key
+        defaul_dict_key_list_10 ={{ alertname_data_dict_key_10|safe }};
+        let defaul_dict_value_list_10 = new Array();//声明一个新的list用于存放数据value
+        defaul_dict_value_list_10 ={{ alertname_data_dict_value_10|safe }};
+        //12月
+        let defaul_dict_key_list_11 = new Array();//声明一个新的list用于存放数据key
+        defaul_dict_key_list_11 ={{ alertname_data_dict_key_11|safe }};
+        let defaul_dict_value_list_11 = new Array();//声明一个新的list用于存放数据value
+        defaul_dict_value_list_11 ={{ alertname_data_dict_value_11|safe }};
+        // 指定图表的配置项和数据
+        let defaultname_option = {
+            title: {
+                text: '月度告警数量趋势',
+                subtext: '主要用于展示本年度每月告警数量增长状态,通过曲线升降获取告警出现的趋势情况',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: defaul_dict_key_list
+            }],
+            yAxis: [{
+                type: 'value',
+            }],
+            series: [{
+                name: '',
+                type: 'bar',
+                label: {
+                    show: true,
+                    position: 'top',
+                },
+                data: defaul_dict_value_list
+            }],
+        };
+        let defaultname_option_1 = {
+            title: {
+                text: '1月',
+                subtext: '主要用于展示1月排名靠前的告警类型,了解月内告警类型增长趋势',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: defaul_dict_key_list_0
+            }],
+            yAxis: [{
+                type: 'value',
+                scale: true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true,
+                data: defaul_dict_value_list_0
+            }],
+        };
+        let defaultname_option_2 = {
+            title: {
+                text: '2月',
+                subtext: '主要用于展示2月排名靠前的告警类型,了解月内告警类型增长趋势',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: defaul_dict_key_list_1
+            }],
+            yAxis: [{
+                type: 'value',
+                scale: true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true,
+                data: defaul_dict_value_list_1
+            }],
+        };
+        let defaultname_option_3 = {
+            title: {
+                text: '3月',
+                subtext: '主要用于展示3月排名靠前的告警类型,了解月内告警类型增长趋势',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: defaul_dict_key_list_2
+            }],
+            yAxis: [{
+                type: 'value',
+                scale: true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true,
+                data: defaul_dict_value_list_2
+            }],
+        };
+        let defaultname_option_4 = {
+            title: {
+                text: '4月',
+                subtext: '主要用于展示4月排名靠前的告警类型,了解月内告警类型增长趋势',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: defaul_dict_key_list_3
+            }],
+            yAxis: [{
+                type: 'value',
+                scale: true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true,
+                data: defaul_dict_value_list_3
+            }],
+        };
+        let defaultname_option_5 = {
+            title: {
+                text: '5月',
+                subtext: '主要用于展示5月排名靠前的告警类型,了解月内告警类型增长趋势',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: defaul_dict_key_list_4
+            }],
+            yAxis: [{
+                type: 'value',
+                scale: true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true,
+                data: defaul_dict_value_list_4
+            }],
+        };
+        let defaultname_option_6 = {
+            title: {
+                text: '6月',
+                subtext: '主要用于展示6月排名靠前的告警类型,了解月内告警类型增长趋势',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: defaul_dict_key_list_5
+            }],
+            yAxis: [{
+                type: 'value',
+                scale: true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true,
+                data: defaul_dict_value_list_5
+            }],
+        };
+        let defaultname_option_7 = {
+            title: {
+                text: '7月',
+                subtext: '主要用于展示7月排名靠前的告警类型,了解月内告警类型增长趋势',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: defaul_dict_key_list_6
+            }],
+            yAxis: [{
+                type: 'value',
+                scale: true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true,
+                data: defaul_dict_value_list_6
+            }],
+        };
+        let defaultname_option_8 = {
+            title: {
+                text: '8月',
+                subtext: '主要用于展示8月排名靠前的告警类型,了解月内告警类型增长趋势',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: defaul_dict_key_list_7
+            }],
+            yAxis: [{
+                type: 'value',
+                scale: true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true,
+                data: defaul_dict_value_list_7
+            }],
+        };
+        let defaultname_option_9 = {
+            title: {
+                text: '9月',
+                subtext: '主要用于展示9月排名靠前的告警类型,了解月内告警类型增长趋势',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: defaul_dict_key_list_8
+            }],
+            yAxis: [{
+                type: 'value',
+                scale: true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true,
+                data: defaul_dict_value_list_8
+            }],
+        };
+        let defaultname_option_10 = {
+            title: {
+                text: '10月',
+                subtext: '主要用于展示10月排名靠前的告警类型,了解月内告警类型增长趋势',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: defaul_dict_key_list_9
+            }],
+            yAxis: [{
+                type: 'value',
+                scale: true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true,
+                data: defaul_dict_value_list_9
+            }],
+        };
+        let defaultname_option_11 = {
+            title: {
+                text: '11月',
+                subtext: '主要用于展示11月排名靠前的告警类型,了解月内告警类型增长趋势',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: defaul_dict_key_list_10
+            }],
+            yAxis: [{
+                type: 'value',
+                scale: true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true,
+                data: defaul_dict_value_list_10
+            }],
+        };
+        let defaultname_option_12 = {
+            title: {
+                text: '12月',
+                subtext: '主要用于展示12月排名靠前的告警类型,了解月内告警类型增长趋势',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {},
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: defaul_dict_key_list_11
+            }],
+            yAxis: [{
+                type: 'value',
+                scale: true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                smooth: true,
+                data: defaul_dict_value_list_11
+            }],
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        defaultname_option && defaulnameChart.setOption(defaultname_option);
+        defaultname_option_1 && Chartmonth_1.setOption(defaultname_option_1);
+        defaultname_option_2 && Chartmonth_2.setOption(defaultname_option_2);
+        defaultname_option_3 && Chartmonth_3.setOption(defaultname_option_3);
+        defaultname_option_4 && Chartmonth_4.setOption(defaultname_option_4);
+        defaultname_option_5 && Chartmonth_5.setOption(defaultname_option_5);
+        defaultname_option_6 && Chartmonth_6.setOption(defaultname_option_6);
+        defaultname_option_7 && Chartmonth_7.setOption(defaultname_option_7);
+        defaultname_option_8 && Chartmonth_8.setOption(defaultname_option_8);
+        defaultname_option_9 && Chartmonth_9.setOption(defaultname_option_9);
+        defaultname_option_10 && Chartmonth_10.setOption(defaultname_option_10);
+        defaultname_option_11 && Chartmonth_11.setOption(defaultname_option_11);
+        defaultname_option_12 && Chartmonth_12.setOption(defaultname_option_12);
+    </script>
+    <!--
+    <script language="JavaScript">
+        function myrefresh() {
+            window.location.reload();
+        }
+
+        setTimeout('myrefresh()', 10000); //指定10秒刷新一次
+    </script>-->
+{% endblock %}

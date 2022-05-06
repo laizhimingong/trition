@@ -1,0 +1,95 @@
+{% extends "base/base.html" %}
+
+{% block page_css %}
+
+{% endblock %}
+
+{% block container %}
+    <div class="col-xl-6 col-lg-6 offset-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">机器探活</h4>
+            </div>
+            <div class="card-body">
+                <div class="basic-form">
+                    <div class="mb-4">
+                        <p>Input the IP address of the machine to be detected</p>
+                        <div class="form-group">
+                            <input type="text" name="detected_host" class="form-control input-rounded"
+                                   autocomplete="off"
+                                   placeholder="" id="ben_enterhost">
+                        </div>
+                        <div class="pull-right">
+                            <button id="ben_getOff" type="button"
+                                    class="btn btn-rounded btn-outline-light">确认
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--
+        <div class="card bg-light">
+            <div class="card-header">
+                <h5 class="card-title"></h5>
+            </div>
+            <div class="card-body mb-0">
+                <p class="card-text"></p>
+            </div>
+            <div class="card-footer bg-transparent border-0"></div>
+        </div>-->
+        <div id="detected_host_info">
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_javascript %}
+    <script>
+        $(document).ready(function () {
+            $("#ben_getOff").on('click', function () {
+                var ben_host = $("#ben_enterhost").val();
+                var re=/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式
+                if (ben_host != null && ben_host !="" ){
+                    if (re.test(ben_host)) {
+                        $.ajax({
+                        url: "/v1/cmdb/detectedHost/",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            detected_host: ben_host,
+                        },
+                        success: function (res_data) {
+                            var str = "";
+                            //console.log(res_data)
+                            if (res_data.msg == "ok") {
+                                str = "<div class=\"card bg-light\">"
+                                    + " <div class=\"card-header\">"
+                                    + "<h5 class=\"card-title\">" + res_data.data.host + "</h5>"
+                                    + "</div>"
+                                    + " <div class=\"card-body mb-0\">"
+                                    + "<p class=\"card-text\">" + res_data.data.rescommondinfo + "</p>"
+                                    + "</div>"
+                                    + "<div class=\"card-footer bg-transparent border-0\">" + res_data.data.starttime + "</div>"
+                                    + "</div>"
+                                $("#detected_host_info").append(str);
+                                return true;
+                                //console.log("返回ok");
+                            } else {
+                                //console.log("返回异常");
+                                return false;
+                            }
+                        }
+                    });
+                        return true;
+                    }
+                    //console.log("IP不规范");
+                    return false;
+                }else {
+                    //console.log("IP为空");
+                    return false;
+                }
+            });
+        });
+    </script>
+{% endblock %}

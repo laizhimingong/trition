@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>5STAR</title>
+    <!-- Favicon icon -->
+    <link rel="icon" href="../../static/avatar/favicon_2.ico">
+    <link href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/twitter-bootstrap/4.5.3/css/bootstrap.min.css"
+          type="text/css" rel="stylesheet"/>
+    <link href="../../static/css/login_css/style2.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet">
+    {% block page_css %}
+
+    {% endblock %}
+</head>
+<body class="h-100">
+<div class="authincation h-100">
+    <div class="container h-100">
+        <div class="row justify-content-center h-100 align-items-center">
+            <div class="col-md-6">
+                <div class="authincation-content">
+                    <div class="row no-gutters">
+                        <div class="col-xl-12">
+                            <div class="auth-form">
+                                <!--<div class="text-center mb-3">
+                                    <a href="index.html"><img src="../../static/images/logo-full.png" alt=""></a>
+                                </div>-->
+                                <h3 class="text-center mb-4 text-white">Sign in your account</h3>
+                                <form action="/v1/user/getlogin/" method="post">{% csrf_token %}
+                                    <div class="form-group">
+                                        <label class="mb-1 text-white"><strong>E-mail</strong><span
+                                                            class="text-danger">*</span></label>
+                                        <input type="email" name="email" class="form-control"
+                                               placeholder="Please enter user email address"
+                                               required="required">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="mb-1 text-white"><strong>Password</strong><span
+                                                            class="text-danger">*</span></label>
+                                        <input type="password" name="password" class="form-control" id="val-password"
+                                               placeholder="Please enter your password" required="required">
+                                    </div>
+
+                                    <!--<div class="form-row d-flex justify-content-between mt-4 mb-2">
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox ml-1 text-white">
+                                                <input type="checkbox" class="custom-control-input"
+                                                       id="basic_checkbox_1">
+                                                <label class="custom-control-label" for="basic_checkbox_1">Remember my
+                                                    preference</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <a class="text-white" href="page-forgot-password.html">Forgot Password?</a>
+                                        </div>
+                                    </div>-->
+                                    <div class="text-center">
+                                        <button type="submit" class="btn bg-white text-primary btn-block">Sign Me In
+                                        </button>
+                                    </div>
+                                </form>
+                                <div class="new-account mt-3">
+                                    <p class="text-white">Do you need to change your password? <a class="text-white"
+                                                                                    href="/update_password/"><strong>Click Here</strong></a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<!--**********************************
+    Scripts
+***********************************-->
+<!-- Required vendors -->
+<script src="../../static/jquery/jquery.min.js"></script>
+<!-- Jquery Validation -->
+<script src="../../static/vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Form validate init -->
+<script src="../../static/js/plugins-init/jquery.validate-init.js"></script>
+{% block page_javascript %}
+{% endblock %}
+</html>

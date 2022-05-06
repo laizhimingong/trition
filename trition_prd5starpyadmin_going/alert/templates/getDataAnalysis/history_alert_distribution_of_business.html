@@ -1,0 +1,102 @@
+{% extends "base/base.html" %}
+
+{% block page_css %}
+
+{% endblock %}
+
+{% block container %}
+    <div style="margin: 0 15px">
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+        <div id="exporter" style="width: 1400px;height:1200px;"></div>
+    </div>
+{% endblock %}
+
+{% block page_javascript %}
+    <!-- 引入 echarts.js -->
+    <script src="/static/echarts/echarts.min.js"></script>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        let exporterChart = echarts.init(document.getElementById('exporter'));
+        let exporter_dict = new Array();//声明一个新的字典
+        exporter_dict = {{ data|safe }}; //取出后台传递的数据，此处添加safe过滤避免警告
+        let exporter_data_dict = new Array();//声明一个新的字典用于存放数据
+        let exporter_data_dict_key_list = new Array();//声明一个新的字典用于存放数据
+        for (let exporter_dict_key in exporter_dict) {
+            //将对应键值对取出存入exporter_data_dict，exporter_dict_key 为该字典的键
+            exporter_data_dict.push({value: exporter_dict[exporter_dict_key], name: exporter_dict_key});
+            exporter_data_dict_key_list.push(exporter_dict_key);
+        }
+        // 指定图表的配置项和数据
+        let exporter_option = {
+            title: {
+                text: '业务告警数量占比情况',
+                subtext: '主要用于展示目前各个业务告警数量,较高占比代表此业务告警较多',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c} ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: ''
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'left',
+                                max: 1548
+                            }
+                        },
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAslmage: {
+                        show: true
+                    },
+                },
+            },
+            calculable: true,
+            series: [{
+                name: '',
+                type: 'pie',
+                radius: '65%',
+                center: ['60%', '50%'],
+                data: exporter_data_dict,//赋值方式为字典传值
+                labelLine: {
+                    show: true
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: '20',
+                        fontWeight: 'bold'
+                    },
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)',
+                    }
+                }
+            }],
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        exporter_option && exporterChart.setOption(exporter_option);
+    </script>
+{% endblock %}

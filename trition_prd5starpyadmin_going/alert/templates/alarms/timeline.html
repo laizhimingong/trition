@@ -1,0 +1,83 @@
+{% extends "base/base.html" %}
+
+{% block page_css %}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block container %}
+
+    <div class="row justify-content-center">
+        <div class="col-xl-4 col-xxl-6 col-lg-6">
+            <div class="card">
+                <div class="card-header border-0 pb-0">
+                    <h4 class="card-title">Alarm Timeline</h4>
+                </div>
+                <div class="card-body">
+                    <div id="dlab_W_TimeLine" class="widget-timeline dlab-scroll height370">
+                        <ul class="timeline" id="alarmtimeline">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block page_javascript %}
+    <script>
+        $(function () {
+            getData();
+            setInterval(function () {
+                $("#alarmtimeline").load(location.href + " #alarmtimeline>*", getData);
+            }, 60000); //60s刷新时间线
+        });
+
+        function getData() {
+            $.ajax({
+                //请求方式
+                type: "GET",
+                //文件位置
+                url: "/v1/alert/getTimeLineInfo/",
+                //返回数据格式为json,也可以是其他格式如
+                dataType: "json",
+                //请求成功后要执行的函数，拼接html
+                success: function (resdata) {
+                    var str = "";
+                    $.each(resdata.data, function (index, item) {
+                        if (item.severity == "Warning") {
+                            str += "<li>"
+                                + "<div class=\"timeline-badge primary\">" + "</div>"
+                                + "<a class=\"timeline-panel text-muted\" href=\"/v1/alert/time_alert/\">" + "<span>" + item.sendtime + "</span>"
+                                + "<h6 class=\"mb-0\">" + "<strong class=\"text-primary\">" + "报警名称:" + "</strong>" + item.alertname + "</h6>"
+                                + "<h6 class=\"mb-0\">" + "<strong class=\"text-primary\">" + "状态:" + "</strong>" + item.severity + "</h6>"
+                                + "<h6 class=\"mb-0\">" + "<strong class=\"text-primary\">" + "业务:" + "</strong>" + item.env + "·" + item.idc + "·" + item.business + "</h6>"
+                                + "<h6 class=\"mb-0\">" + "<strong class=\"text-primary\">" + "发生时间:" + "</strong>" + item.startsAt + "</h6>"
+                                + "<h6 class=\"mb-0\">" + "<strong class=\"text-primary\">" + "持续时间:" + "</strong>" + item.caltime + "</h6>"
+                                + "<h6 class=\"mb-0\">" + "<strong class=\"text-primary\">" + "报警详情:" + "</strong>" + item.description + "</h6>"
+                                + "</a>"
+                                + "</li>";
+                        } else {
+                            str += "<li>"
+                                + "<div class=\"timeline-badge danger\">" + "</div>"
+                                + "<a class=\"timeline-panel text-muted\" href=\"/v1/alert/time_alert/\">" + "<span>" + item.sendtime + "</span>"
+                                + "<h6 class=\"mb-0\">" + "<strong class=\"text-primary\">" + "报警名称:" + "</strong>" + item.alertname + "</h6>"
+                                + "<h6 class=\"mb-0\">" + "<strong class=\"text-primary\">" + "状态:" + "</strong>" + item.severity + "</h6>"
+                                + "<h6 class=\"mb-0\">" + "<strong class=\"text-primary\">" + "业务:" + "</strong>" + item.env + "·" + item.idc + "·" + item.business + "</h6>"
+                                + "<h6 class=\"mb-0\">" + "<strong class=\"text-primary\">" + "发生时间:" + "</strong>" + item.startsAt + "</h6>"
+                                + "<h6 class=\"mb-0\">" + "<strong class=\"text-primary\">" + "持续时间:" + "</strong>" + item.caltime + "</h6>"
+                                + "<h6 class=\"mb-0\">" + "<strong class=\"text-primary\">" + "报警详情:" + "</strong>" + item.description + "</h6>"
+                                + "</a>"
+                                + "</li>";
+                        }
+                    });
+                    $("#alarmtimeline").append(str);
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

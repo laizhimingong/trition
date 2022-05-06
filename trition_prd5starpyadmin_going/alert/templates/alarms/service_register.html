@@ -1,0 +1,96 @@
+{% extends "base/base.html" %}
+
+{% block page_css %}
+
+{% endblock %}
+
+{% block container %}
+    <div class="row"><div style="padding: 15px;margin: 0 15px">
+            <div class="layui-row">
+                <div class="pull-right">
+                    <div class="layui-inline">
+                        <input class="layui-input" name="search_info" id="search_info" autocomplete="off"
+                               placeholder="模糊搜索">
+                    </div>
+                    <button type="submit" class="layui-btn" data-type="reload" id="search">搜索</button>
+                    <button type="submit" title="亲，你又来刷新啦，不要重复点击，请等待刷新完成哦" class="layui-btn"><a href="/v1/alert/refreshServiceRegister/" style="text-decoration: none;color: #ffffff">刷新</a>
+                    </button>
+                </div>
+            </div>
+
+            <div class="layui-row">
+                <table class="layui-hide" id="service-table"></table>
+            </div>
+    </div>
+{% endblock %}
+
+{% block page_javascript %}
+    <script>
+        layui.use('table', function () {
+            var table = layui.table;
+            table.render({
+                elem: '#service-table'
+                , skin: 'nob'
+                , even: false
+                , size: 'lg'
+                , height: 850
+                , url: '/v1/alert/table/service_register/'
+                , method: 'get'
+                , request: {
+                    pageName: 'pageIndex',  // 页码的参数名称，默认：page
+                    limitName: 'pageSize',   // 每页数据量的参数名，默认：limit
+                    search_info: 'search_info', //模糊查询字段
+                },
+                response: {
+                    statusName: 'code',     // 规定数据状态的字段名称，默认：code
+                    statusCode: 0,          // 规定成功的状态码，默认：0
+                    msgName: 'msg',         // 规定状态信息的字段名称，默认：msg
+                    countName: 'DataCount', // 规定数据总数的字段名称，默认：count
+                    dataName: 'data'        // 规定数据列表的字段名称，默认：data
+                }
+                , cols: [[ //表头
+                    {field: 'id', width: 70, title: 'ID', sort: true, align: 'center'}
+                    , {field: 'ip', width: 150, title: 'IP', sort: true, align: 'center'}
+                    , {field: 'port', width: 85, title: 'PORT', sort: true, align: 'center'}
+                    , {field: 'env', width: 80, title: '环境', sort: true, align: 'center'}
+                    , {field: 'idc', width: 80, title: '机房', sort: true, align: 'center'}
+                    , {field: 'business', width: 200, title: '业务', sort: true, align: 'center'}
+                    , {field: 'hostname', width: 295, title: '主机名', sort: true, align: 'center'}
+                    , {field: 'exporter', width: 200, title: 'EXPORTER', sort: true, align: 'center'}
+                    , {field: 'service_id', width: 500, title: 'SERVICE ID', sort: true, }
+                ]]
+                , page: {
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'],     // 自定义分页布局
+                    curr: 1,      // 设置默认起始页1
+                    groups: 10,   //只显示10个连续页码,就是说显示10个可见页其他的省略
+                    first: '首页', // 不显示首页
+                    last: '尾页'   // 不显示尾页
+                },
+                limit: 20,
+                limits: [10, 20, 40, 60, 80, 100],
+                loading: 'false',
+                id: 'reload'
+            });
+            var $ = layui.$, active = {
+                reload: function () {
+                    var search_info = $('#search_info');
+                    //执行重载
+                    table.reload('reload', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            search_info: search_info.val(),//逗号隔开
+                        }
+                    }, 'data');
+                }
+            };
+            $('#search').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+    </script>
+{% endblock %}
+
+

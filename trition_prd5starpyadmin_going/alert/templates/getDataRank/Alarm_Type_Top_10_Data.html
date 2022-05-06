@@ -1,0 +1,92 @@
+{% extends "base/base.html" %}
+
+{% block page_css %}
+
+{% endblock %}
+
+{% block container %}
+    <div style="margin: 0 15px">
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+        <div id="alertname" style="width: 1500px;height:800px;"></div>
+    </div>
+{% endblock %}
+
+{% block page_javascript %}
+    <!-- 引入 echarts.js -->
+    <script src="/static/echarts/echarts.min.js"></script>
+    <script type="text/javascript">
+        //告警类型
+        let alertnameChart = echarts.init(document.getElementById('alertname'));
+        let alertname_dict_key_list = new Array();//声明一个新的list用于存放数据key
+        alertname_dict_key_list ={{ alertname_data_dict_key|safe }};
+        let alertname_dict_value_list = new Array();//声明一个新的list用于存放数据value
+        alertname_dict_value_list ={{ alertname_data_dict_value|safe }};
+        // 指定图表的配置项和数据
+        let alertname_option = {
+            title: {
+                text: '不同类型告警 Top 10',
+                subtext: '主要用于展示Top 10的不同类型告警数量，趋势走向',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                     saveAsImage:{
+
+                },
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+
+                data: alertname_dict_key_list
+            }],
+            yAxis: [{
+                type: 'value',
+                scale:true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                label:{
+                    show:true,
+                    position:'top',
+                },
+                 smooth:true,
+                data: alertname_dict_value_list
+            }],
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        alertname_option && alertnameChart.setOption(alertname_option);
+    </script>
+    <!--
+    <script language="JavaScript">
+        function myrefresh() {
+            window.location.reload();
+        }
+
+        setTimeout('myrefresh()', 10000); //指定10秒刷新一次
+    </script>-->
+{% endblock %}

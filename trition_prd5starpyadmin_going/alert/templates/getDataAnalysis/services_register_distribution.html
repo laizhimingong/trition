@@ -1,0 +1,99 @@
+{% extends "base/base.html" %}
+
+{% block page_css %}
+
+{% endblock %}
+
+{% block container %}
+    <div style="margin: 0 15px">
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+        <div id="business" style="width: 1400px;height:1200px;"></div>
+    </div>
+{% endblock %}
+
+{% block page_javascript %}
+    <!-- 引入 echarts.js -->
+    <script src="/static/echarts/echarts.min.js"></script>
+    <script>
+        // 基于准备好的dom，初始化echarts实例
+        let businessChart = echarts.init(document.getElementById('business'));
+        let business_dict = new Array();//声明一个新的字典
+        business_dict = {{ data|safe }};//取出后台传递的数据，此处添加safe过滤避免警告
+        let business_data_dict = new Array();//声明一个新的字典用于存放数据
+        for (let business_dict_key in business_dict) {
+            //将对应键值对取出存入exporter_data_dict，exporter_dict_key 为该字典的键
+            business_data_dict.push({value: business_dict[business_dict_key], name: business_dict_key});
+        }
+        // 指定图表的配置项和数据
+        let business_option = {
+            title: {
+                text: '业务监控注册情况',
+                subtext: '主要用于展示截至目前所有已注册监控服务分布情况,了解目前个业务监控服务接入情况',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c} ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+            },
+             toolbox: {
+                show: true,
+                feature: {
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'left',
+                                max: 1548
+                            }
+                        },
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAslmage: {
+                        show: true
+                    },
+                },
+            },
+            calculable: true,
+            series: [{
+                name: '',
+                type: 'pie',
+                radius: '65%',
+                center: ['60%', '50%'],
+                data: business_data_dict,//赋值方式为字典传值
+                labelLine: {
+                    show: true
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: '25',
+                        fontWeight: 'bold'
+                    },
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)',
+                    }
+                }
+            }],
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        business_option && businessChart.setOption(business_option);
+    </script>
+{% endblock %}

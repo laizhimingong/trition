@@ -1,0 +1,73 @@
+{% extends "base/base.html" %}
+
+{% block page_css %}
+
+{% endblock %}
+
+{% block container %}
+    <div style="margin: 0 15px">
+        <table class="layui-hide" id="alert-table"></table>
+    </div>
+{% endblock %}
+
+{% block page_javascript %}
+    <script>
+        $(function () {
+            getData3();
+            setInterval(function () {
+                $("#alert-table").load(location.href + " #alert-table>*", getData3);
+            }, 60000); //60s刷新下实时告警列表
+        });
+
+        function getData3() {
+            layui.use('table', function () {
+                var table = layui.table;
+                table.render({
+                    elem: '#alert-table'
+                    , skin: 'nob'
+                    , even: false
+                    , size: 'lg'
+                    , height: 850
+                    , url: '/v1/alert/table/time_alerts/'
+                    , method: 'get'
+                    , request: {
+                        pageName: 'pageIndex',  // 页码的参数名称，默认：page
+                        limitName: 'pageSize'   // 每页数据量的参数名，默认：limit
+                    },
+                    response: {
+                        statusName: 'code',     // 规定数据状态的字段名称，默认：code
+                        statusCode: 0,          // 规定成功的状态码，默认：0
+                        msgName: 'msg',         // 规定状态信息的字段名称，默认：msg
+                        countName: 'DataCount', // 规定数据总数的字段名称，默认：count
+                        dataName: 'data'        // 规定数据列表的字段名称，默认：data
+                    }
+                    , cols: [[
+                        {field: 'alertname', width: 300, title: '告警名称', sort: true, }
+                        , {field: 'status', width: 100, title: '状态', sort: true, align: 'center'}
+                        , {field: 'severity', width: 100, title: '级别', sort: true, align: 'center'}
+                        , {field: 'ip', width: 150, title: 'IP', sort: true, align: 'center'}
+                        , {field: 'port', width: 80, title: 'PORT', sort: true, align: 'center'}
+                        , {field: 'env', width: 80, title: '环境', sort: true, align: 'center'}
+                        , {field: 'idc', width: 80, title: '机房', sort: true, align: 'center'}
+                        , {field: 'business', width: 120, title: '业务', sort: true, align: 'center'}
+                        , {field: 'description', width: 165, title: '告警详情', sort: true, align: 'center'}
+                        , {field: 'sendtime', width: 165, title: '推送时间', sort: true}
+                        , {field: 'startsAt', width: 165, title: '开始时间', sort: true}
+                        //, {field: 'endsAt', width: 135, title: '结束时间', sort: true}
+                        , {field: 'caltime', width: 150, title: '异常时间', sort: true}
+                    ]]
+                    , page: {
+                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'],     // 自定义分页布局
+                        curr: 1,      // 设置默认起始页1
+                        groups: 10,   //只显示10个连续页码,就是说显示10个可见页其他的省略
+                        first: '首页', // 不显示首页
+                        last: '尾页'   // 不显示尾页
+                    },
+                    limit: 20,
+                    limits: [10, 20, 30, 40, 50, 100]
+                });
+            });
+        }
+    </script>
+
+{% endblock %}

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>5STAR</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../static/images/avatar/favicon_2.ico">
+    <!-- jquery  dataTables -->
+    <link href="../../../static/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <!-- jquery  jqvmap -->
+    <link href="../../../static/vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
+    <!--bootstrap-->
+    <link href="../../../static/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+    <!--
+    <link href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/twitter-bootstrap/4.5.3/css/bootstrap.min.css"
+          type="text/css" rel="stylesheet"/>-->
+    <link rel="stylesheet" href="../../../static/bootstrap-4.6.0/css/bootstrap.min.css">
+    <!--页面框架样式-->
+    <link href="../../../static/css/vora_style.css" rel="stylesheet">
+
+    <link href="../../../static/vendor/owl-carousel/owl.carousel.css" rel="stylesheet">
+    <!-- layui -->
+    <link rel="stylesheet" href="../../../static/layui/css/layui.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet">
+
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        a {
+            text-decoration: none
+        }
+
+        a:hover {
+            text-decoration: none
+        }
+
+        /* 固定容器高度 溢出隐藏 */
+        #Fixedheight {
+            height: 770px;
+        }
+
+        .J_scroll_wrap {
+            width: 800px;
+            color: #ffffff;
+            margin: 0 auto;
+            line-height: 60px;
+            overflow: hidden;
+            height: 60px;
+        }
+
+        .J_scroll_wrap ul {
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        .J_scroll_wrap ul li {
+            padding: 0;
+            font-size: 18px;
+        }
+
+        .layui-table td, .layui-table th, .layui-table-col-set, .layui-table-fixed-r, .layui-table-grid-down, .layui-table-header, .layui-table-page, .layui-table-tips-main, .layui-table-tool, .layui-table-total, .layui-table-view, .layui-table[lay-skin=line], .layui-table[lay-skin=row] {
+
+            border-color: #ffffffb3;
+
+        }
+
+        .layui-table-header {
+            border-width: 0 0 0;
+        }
+
+    </style>
+    {% block page_css %}
+
+    {% endblock %}
+</head>
+<body>
+<!--**********************************
+    Main wrapper start
+***********************************-->
+<div id="main-wrapper">
+    <!--**********************************
+        Nav header start
+    ***********************************-->
+    <div class="nav-header">
+        <a href="/v1/home/" class="brand-logo" style="margin: 0 auto;">
+            <img src="../../../static/img/5starlogo.png" alt="" style="width: 200px ;height: 60px;">
+        </a>
+        <div class="nav-control">
+            <div class="hamburger">
+                <span class="line"></span><span class="line"></span><span class="line"></span>
+            </div>
+        </div>
+    </div>
+    <!--**********************************
+        Nav header end
+    ***********************************-->
+
+    <!--**********************************
+        Header start
+    ***********************************-->
+    <div class="header">
+        <div class="header-content">
+            <nav class="navbar navbar-expand">
+                <div class="collapse navbar-collapse justify-content-between">
+                    <div class="header-left">
+                        <div class="dashboard_bar J_scroll_wrap">
+                            <ul id="alarmScrollNews">
+
+                            </ul>
+                        </div>
+                    </div>
+                    <ul class="navbar-nav header-right">
+                        <li class="nav-item dropdown header-profile">
+                            <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                                <img src="../../../static/avatar/1_128_128.ico" width="20" alt=""/>
+                                <div class="header-info">
+                                    <span class="text-black">{{ email }}</span>
+                                    <p class="fs-12 mb-0">Super 5STAR</p>
+                                </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="/update_password/" class="dropdown-item ai-icon">
+                                    <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary"
+                                         width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    <span class="ml-2">Update Password</span>
+                                </a>
+                                <a href="/v1/user/logout/" class="dropdown-item ai-icon">
+                                    <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger"
+                                         width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                        <polyline points="16 17 21 12 16 7"></polyline>
+                                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                                    </svg>
+                                    <span class="ml-2">Logout</span>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!--**********************************
+        Header end ti-comment-alt
+    ***********************************-->
+
+    <!--**********************************
+        Sidebar start
+    ***********************************-->
+    <div class="dlabnav">
+        <div class="dlabnav-scroll">
+            <ul class="metismenu" id="menu">
+                <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
+                    <i class="flaticon-381-networking"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                    <ul aria-expanded="false">
+                        <li><a href="/v1/home/" title="">监控信息预览</a></li>
+
+                    </ul>
+                </li>
+                <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
+                    <i class="flaticon-381-cloud"></i>
+                    <span class="nav-text">Data Center</span>
+                </a>
+                    <ul aria-expanded="false">
+                        <li><a class="has-arrow" href="#" aria-expanded="false" title="">告警数据排名</a>
+                            <ul aria-expanded="false">
+                                <li><a href="/v1/alert/getServiceAlarmsTop10Data/" title="">业务告警数量 Top 10</a></li>
+                                <li><a href="/v1/alert/getHostAlarmsTop10Data/" title="">主机告警 Top 10</a></li>
+                                <li><a href="/v1/alert/getAlarmTypeTop10Data/" title="">告警类型 Top 10</a>
+                                <li><a href="/v1/alert/getMonthAlarmsTop10Data/" title="">月度告警数量 Ranking</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a class="has-arrow" href="#" aria-expanded="false" title=""> 告警数据分析</a>
+                            <ul aria-expanded="false">
+                                <li><a href="/v1/alert/monitor_distribution/" title="">服务器＆组件</a></li>
+                                <li><a href="/v1/alert/getBusinessServerMonitorDistribution/" title="">各业务服务器分布 </a></li>
+                                <li><a href="/v1/alert/services_register_distribution/" title="">各业务内服务器＆组件</a></li>
+                                <li><a href="/v1/alert/history_alert_distribution/" title="">不同告警类型</a></li>
+                                <li><a href="/v1/alert/business_history_alert_distribution/" title="">不同业务告警</a></li>
+                                <li><a href="/v1/alert/getService_Alarm_type_proportionDistribution/" title="">查询各业务告警类型</a>
+                                <li><a href="/v1/alert/host_alert_distribution/" title="">查询主机告警</a></li>
+                                <li><a href="/v1/alert/getDifferentAlarm_Service_proportionDistribution/" title="">查询不同类型告警下业务分布</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
+                    <i class="flaticon-381-app"></i>
+                    <span class="nav-text">Apps</span>
+                </a>
+                    <ul aria-expanded="false">
+                        <li><a class="has-arrow " href="#" aria-expanded="false" title="">报警信息</a>
+                            <ul aria-expanded="false">
+                                <li><a href="/v1/alert/alarmtimeline/" title="">实时告警时间线</a>
+                                </li>
+                                <li><a href="/v1/alert/time_alert/" title="">实时告警</a></li>
+                                <li><a href="/v1/alert/history_alert/" title="">历史告警</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="has-arrow" href="#" aria-expanded="false" title="">服务器信息</a>
+                            <ul aria-expanded="false">
+                                <li><a href="/v1/cmdb/" title="">服务器信息查询</a></li>
+                                <li><a href="/v1/todaycmdb/" title="">今日新增服务器s</a></li>
+                                <li><a href="/v1/nomonitorcmdb/" title="=">未监控服务器</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="has-arrow" href="#" aria-expanded="false" title="">服务注册</a>
+                            <ul aria-expanded="false">
+                                <li><a href="/v1/alert/service_register/" title="">注册服务信息查询</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
+                    <i class="flaticon-381-database"></i>
+                    <span class="nav-text">Database Manager</span>
+                </a>
+                    <ul aria-expanded="false">
+                        <li><a href="/v1/mysqlreplication/" title="">Mysql复制关系</a></li>
+                    </ul>
+                </li>
+                <li><a class="has-arrow ai-icon" href="#" aria-expanded="false">
+                    <i class="flaticon-381-command"></i>
+                    <span class="nav-text">Operating Functions</span>
+                </a>
+                    <ul aria-expanded="false">
+                        <li><a href="/v1/detectingsurvival/" title="">机器探活</a></li>
+                        <li><a href="/v1/dtjk/Status500Data/" title="">Status500</a></li>
+                        <li><a href="/v1/dtjk/Status404Data/" title="">Status404</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!--
+            <div class="copyright">
+                <p><strong>JOKE Saas Admin Dashboard</strong> © 2021 All Rights Reserved</p>
+                <p>Made with ♥ by DexignLab</p>
+            </div>-->
+        </div>
+    </div>
+    <!--**********************************
+        Sidebar end
+    ***********************************-->
+
+    <!--**********************************
+        Content body start
+    ***********************************-->
+    <div class="content-body">
+        <div class="container-fluid" id="Fixedheight">
+
+            {% block container %}
+
+            {% endblock %}
+
+
+        </div>
+
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <!--
+            <div class="footer">
+                <div class="copyright">
+                    <p>Copyright © Designed &amp; Developed by 2021</p>
+                </div>
+            </div>-->
+        <!--**********************************
+            Footer end
+        ***********************************-->
+    </div>
+</div>
+<!--**********************************
+    Main wrapper end
+***********************************-->
+
+</body>
+<!--**********************************
+    Scripts
+***********************************-->
+<!-- Required js -->
+<!-- jquery -->
+<script src="../../../static/jquery-3.6.0/jquery.js"></script>
+<script src="../../../static/vendor/global/global.min.js"></script>
+<script src="../../../static/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script src="../../../static/js/custom.min.js"></script>
+<script src="../../../static/js/dlabnav-init.js"></script>
+<script src="../../../static/vendor/owl-carousel/owl.carousel.js"></script>
+<!-- layui -->
+<script src="../../../static/layui/layui.js"></script>
+<!-- Datatable -->
+<script src="../../../static/vendor/datatables/js/jquery.dataTables.min.js"></script>
+<script src="../../../static/js/plugins-init/datatables.init.js"></script>
+<!-- Jquery Validation -->
+<script src="../../../static/vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Form validate init -->
+<script src="../../../static/js/plugins-init/jquery.validate-init.js"></script>
+<script src="../../../static/vendor/jquery-steps/build/jquery.steps.min.js"></script>
+
+<!-- 头部告警刷新js -->
+<script>
+    $(function () {
+        var $this = $(".J_scroll_wrap");
+        var scrollTimer;
+        $this.hover(function () {
+            clearInterval(scrollTimer);
+        }, function () {
+            scrollTimer = setInterval(function () {
+                scrollNews($this);
+            }, 5000);
+        }).trigger("mouseleave");
+    });
+
+    function scrollNews(obj) {
+        var $self = obj.find("ul:first");
+        var innerHeight = $self.find("li:first").outerHeight(true);
+        $self.animate({
+            "marginTop": -innerHeight + "px"
+        }, function () {
+            $self.css({
+                marginTop: 0
+            }).find("li:first").appendTo($self);
+        })
+    }
+</script>
+<script>
+    $(function () {
+        getData2();
+        setInterval(function () {
+            $("#alarmScrollNews").load(location.href + " #alarmScrollNews>*", getData2);
+            $("#alarmScrollNews1").load(location.href + " #alarmScrollNews1>*", getData2);
+        }, 60000); //60s刷新告警轮播信息
+    });
+
+    function getData2() {
+        $.ajax({
+            //请求方式
+            type: "GET",
+            //文件位置
+            url: "/v1/alert/getTimeLineInfo/",
+            //返回数据格式为json,也可以是其他格式如
+            dataType: "json",
+            //请求成功后要执行的函数，拼接html
+            success: function (resdata) {
+                var str = "";
+                //console.log(resdata)
+                $.each(resdata.data, function (index, item) {
+                    //console.log(index);
+                    str += "<li>"
+                        + " <a href=\"/v1/alert/alarmtimeline/\">"
+                        + item.alertname + "-" + item.ip
+                        + "</a>"
+                        + "</li>";
+                });
+                $("#alarmScrollNews").append(str);
+                $("#alarmScrollNews1").append(str);
+            }
+        });
+    }
+</script>
+{% block page_javascript %}
+{% endblock %}
+</html>

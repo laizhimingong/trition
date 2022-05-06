@@ -1,0 +1,92 @@
+{% extends "base/base.html" %}
+
+{% block page_css %}
+
+{% endblock %}
+
+{% block container %}
+    <div style="margin: 0 15px">
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+        <div id="business" style="width: 1500px;height:800px;"></div>
+    </div>
+{% endblock %}
+
+{% block page_javascript %}
+      <!-- 引入 echarts.js -->
+    <script src="/static/echarts/echarts.min.js"></script>
+    <script>
+        //业务告警,告警类型,主机告警 排名
+        // 基于准备好的dom，初始化echarts实例
+        let businessChart = echarts.init(document.getElementById('business'));
+        let business_dict_key_list = new Array();//声明一个新的list用于存放数据key
+        business_dict_key_list ={{ search_time|safe }};
+        let business_dict_value_list = new Array();//声明一个新的list用于存放数据value
+        business_dict_value_list ={{ status500_data|safe }};
+        // 指定图表的配置项和数据
+        let business_option = {
+            title: {
+                text: 'Status 500',
+                subtext: 'Status 500',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: []
+            },
+            toolbox: {
+                show: true,
+
+                feature: {
+                    saveAsImage:{
+
+                },
+                    mark: {
+                        show: true,
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true,
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['line', 'bar'],
+                        restore: {
+                            show: true
+                        },
+                        saveAslmage: {
+                            show: true
+                        }
+                    },
+                },
+            },
+            calculable: true,
+            xAxis: [{
+                type: 'category',
+                data: business_dict_key_list
+            }],
+            yAxis: [{
+                type: 'value',
+                scale:true
+            }],
+            series: [{
+                name: '',
+                type: 'line',
+                smooth:true,
+                lineStyle:{
+                    color:'green',
+                },
+                data: business_dict_value_list
+            }],
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        business_option && businessChart.setOption(business_option);
+    </script>
+    <script language="JavaScript">
+        function myrefresh() {
+            window.location.reload();
+        }
+        setTimeout('myrefresh()', 10000); //指定60秒刷新一次
+    </script>
+{% endblock %}

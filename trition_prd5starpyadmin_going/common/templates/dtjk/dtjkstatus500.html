@@ -1,0 +1,107 @@
+{% extends "base/base.html" %}
+
+{% block page_css %}
+
+{% endblock %}
+
+{% block container %}
+    <div style="margin: 0 15px">
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+        <div id="mychart" style="width: 1500px;height:800px;"></div>
+    </div>
+{% endblock %}
+
+{% block page_javascript %}
+    <!-- 引入 echarts.js -->
+    <script src="/static/echarts/echarts.min.js"></script>
+    <script>
+        function getData() {
+            $.ajax({
+                    //请求方式
+                    type: "GET",
+                    //文件位置
+                    url: "/v1/dtjk/getStatus500Data/",
+                    //返回数据格式为json,也可以是其他格式如
+                    dataType: "json",
+                    async: false,
+                    //请求成功后要执行的函数，拼接html
+                    success: function (resdata) {
+                        window.x_data = resdata.datas.search_time;
+                        window.y_data = resdata.datas.status500_data;
+                        // 基于准备好的dom，初始化echarts实例
+                        let myChart = echarts.init(document.getElementById('mychart'));
+
+                        // 指定图表的配置项和数据
+                        let my_option = {
+                            title: {
+                                text: 'Status 500',
+                                subtext: '',
+                                x: 'center'
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+
+                            },
+                            legend: {
+                                data: []
+                            },
+                            toolbox: {
+                                show: true,
+
+                                feature: {
+                                    saveAsImage: {},
+                                    mark: {
+                                        show: true,
+                                    },
+                                    dataView: {
+                                        show: true,
+                                        readOnly: true,
+                                    },
+                                    magicType: {
+                                        show: true,
+                                        type: ['line', 'bar'],
+                                        restore: {
+                                            show: true
+                                        },
+                                        saveAslmage: {
+                                            show: true
+                                        }
+                                    },
+                                },
+                            },
+                            calculable: true,
+                            xAxis: [{
+                                type: 'category',
+                                data: window.x_data
+                            }],
+                            yAxis: [{
+                                type: 'value',
+                                scale: true
+                            }],
+                            series: [{
+                                name: '',
+                                type: 'line',
+                                smooth: true,
+                                lineStyle: {
+                                    color: 'gray',
+                                },
+                                data: window.y_data
+                            }],
+                        };
+                        // 使用刚指定的配置项和数据显示图表。
+                        my_option && myChart.setOption(my_option);
+                    }
+                }
+            )
+            ;
+        }
+
+
+        $(function () {
+            setInterval(function () {
+                getData();
+            }, 5000); //60s刷新告警轮播信息
+        });
+    </script>
+
+{% endblock %}
